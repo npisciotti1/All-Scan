@@ -1,8 +1,6 @@
 //@flow
 
 import React from 'react';
-import Camera from 'react-native-camera';
-
 import Provider from 'react-redux';
 
 // import { NativeRouter, Route, Link } from 'react-router-native';
