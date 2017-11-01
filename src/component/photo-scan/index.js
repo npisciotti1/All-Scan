@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Button, StyleSheet, View, Text } from 'react-native';
 
-import RNFetchBlob from 'react-native-fetch-blob';
 import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 
 //add react-native-image-resizer.
@@ -21,17 +21,40 @@ export default class PhotoScan extends React.Component {
 
     this.state = {};
 
-    this.showImgPicker = this.showImgPicker.bind(this);
+    this.uploadImg = this.uploadImg.bind(this)
+    this.selectImgAndUpload = this.selectImgAndUpload.bind(this);
   }
 
-  showImgPicker() {
-    ImagePicker.showImagePicker((response) => {
+  uploadImg() {
+    let data = RNFetchBlob.fs.readFile('/Users/nikko/Documents/all-scan/assets/test2.jpeg', 'base64')
+    .then( data => {
+      console.log('data?', data);
+
+      RNFetchBlob.fetch('POST', 'http://localhost:3000/api/analyze', {
+        'content-type': 'octet-stream',
+      }, data)
+      .uploadProgress((written, total) => {
+        console.log('uploaded', written / total)
+      })
+      .then( res => {
+        console.log('success:', res);
+      })
+      .catch( err => {
+        console.log('error:', err);
+      })
+    })
+
+  }
+
+  selectImgAndUpload() {
+
+    ImagePicker.showImagePicker( response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      }
+      // else if (response.error) {
+      //   console.log('ImagePicker Error: ', response.error);
+      // }
       else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       }
@@ -41,18 +64,18 @@ export default class PhotoScan extends React.Component {
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-        this.setState({
-          avatarSource: source
-        });
+        this.setState({ imgSource: source });
+        this.uploadImg();
       }
     });
   }
+
 
   render() {
     return(
       <View style={styles.container}>
         <Button
-          onPress={this.showImgPicker}
+          onPress={this.selectImgAndUpload}
           accessabilityLabel="Press to take a picture"
           title="Scan Photo"
         />
