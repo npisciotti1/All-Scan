@@ -1,5 +1,4 @@
 import React from 'react';
-import Camera from 'react-native-camera';
 
 import { TouchableHighlight, StyleSheet, View, Text } from 'react-native';
 
@@ -21,30 +20,21 @@ export default class PhotoScan extends React.Component {
 
     this.state = {};
 
-    this.takePicture = this.takePicture.bind(this);
+    this.testFunc = this.testFunc.bind(this);
   }
 
-  takePicture() {
-    let camOps = {};
-
-    this.camera.capture({metadata: camOps})
-    .then( img => {
-
-    })
+  testFunc(e) {
+    console.log('I was clicked', e.target);
   }
 
   render() {
     return(
       <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          captureQuality='low'
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}>
-          <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
-        </Camera>
+        <TouchableHighlight
+          onPress={this.testFunc}
+          style={styles.touchable}
+          >
+        </TouchableHighlight>
       </View>
     )
   }
@@ -52,21 +42,9 @@ export default class PhotoScan extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    color: '#000',
-    padding: 10,
-    margin: 40
+  touchable: {
+    color: 'blue',
+    width: 50,
+    height: 50,
   }
 });
