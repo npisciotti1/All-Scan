@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, StyleSheet, View, Text } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
+import ImagePicker from 'react-native-image-picker';
 
 
 //add react-native-image-resizer.
@@ -20,18 +21,38 @@ export default class PhotoScan extends React.Component {
 
     this.state = {};
 
-    this.testFunc = this.testFunc.bind(this);
+    this.showImgPicker = this.showImgPicker.bind(this);
   }
 
-  testFunc() {
-    console.log('I was clicked');
+  showImgPicker() {
+    ImagePicker.showImagePicker((response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        let source = { uri: response.uri };
+
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
   }
 
   render() {
     return(
       <View style={styles.container}>
         <Button
-          onPress={this.testFunc}
+          onPress={this.showImgPicker}
           accessabilityLabel="Press to take a picture"
           title="Scan Photo"
         />
