@@ -38,6 +38,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>AllScan would like to access your photo library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>AllScan would like to access your camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>AllScan would like to access your microphone</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSAppTransportSecurity</key>
