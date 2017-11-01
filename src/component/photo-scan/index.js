@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TouchableHighlight, StyleSheet, View, Text } from 'react-native';
+import { Button, StyleSheet, View, Text } from 'react-native';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 
@@ -23,18 +23,18 @@ export default class PhotoScan extends React.Component {
     this.testFunc = this.testFunc.bind(this);
   }
 
-  testFunc(e) {
-    console.log('I was clicked', e.target);
+  testFunc() {
+    console.log('I was clicked');
   }
 
   render() {
     return(
       <View style={styles.container}>
-        <TouchableHighlight
+        <Button
           onPress={this.testFunc}
-          style={styles.touchable}
-          >
-        </TouchableHighlight>
+          accessabilityLabel="Press to take a picture"
+          title="Scan Photo"
+        />
       </View>
     )
   }
@@ -42,6 +42,10 @@ export default class PhotoScan extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   touchable: {
     color: 'blue',
     width: 50,
