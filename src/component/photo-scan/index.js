@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { Button, StyleSheet, View, Text, Image } from 'react-native';
 
-import ImagePicker from 'react-native-image-picker';
+// import Uploader from 'base64-image-uploader';
+import pickImageProm from '../../lib/pickImage';
 import RNFetchBlob from 'react-native-fetch-blob';
 
 
@@ -22,62 +23,55 @@ export default class PhotoScan extends React.Component {
     this.state = {};
 
     this.uploadImg = this.uploadImg.bind(this)
-    this.selectImgAndUpload = this.selectImgAndUpload.bind(this);
+    this.selectImg = this.selectImg.bind(this);
+  }
+
+  selectImg() {
+    pickImageProm()
+    .then( res => {
+      this.setState({imgSource: res.source, data: res.data})
+      console.log('this.state:', this.state);
+    })
+    .catch(err => console.error('__ERROR__: ', err));
   }
 
   uploadImg() {
-    let data = RNFetchBlob.fs.readFile('/Users/nikko/Documents/all-scan/assets/test2.jpeg', 'base64')
-    .then( data => {
-      console.log('data?', data);
-
-      RNFetchBlob.fetch('POST', 'http://localhost:3000/api/analyze', {
-        'content-type': 'octet-stream',
-      }, data)
-      .uploadProgress((written, total) => {
-        console.log('uploaded', written / total)
-      })
-      .then( res => {
-        console.log('success:', res);
-      })
-      .catch( err => {
-        console.log('error:', err);
-      })
+    if(!this.state.imgSource) {
+      return console.error('no image selected!')
+    }
+    RNFetchBlob.fetch('POST', 'http://localhost:3000/api/analyze', {
+      'Content-Type': 'multipart/form-data'
+    }, [
+      { name: 'info', data: 'test'},
+      { name: 'image', filename: 'test2.jpeg', data: this.state.data}
+    ])
+    .then( res => {
+      console.log('success:', res);
     })
-
-  }
-
-  selectImgAndUpload() {
-
-    ImagePicker.showImagePicker( response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }
-      // else if (response.error) {
-      //   console.log('ImagePicker Error: ', response.error);
-      // }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      }
-      else {
-        let source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({ imgSource: source });
-        this.uploadImg();
-      }
-    });
+    .catch( err => {
+      console.log('error:', err);
+    })
   }
 
 
   render() {
+    let img = this.state.imgSource == null ? null :
+    <Image
+    source={this.state.imgSource}
+    style={{height:200, width: 200}}
+    />
     return(
       <View style={styles.container}>
+        {img}
         <Button
-          onPress={this.selectImgAndUpload}
+          onPress={this.selectImg}
           accessabilityLabel="Press to take a picture"
-          title="Scan Photo"
+          title="Choose an Image"
+        />
+        <Button
+          onPress={this.uploadImg}
+          accessabilityLabel="Press to upload the image"
+          title="Upload Image"
         />
       </View>
     )
