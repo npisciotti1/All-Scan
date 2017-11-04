@@ -37,7 +37,7 @@ export default class PhotoScan extends React.Component {
   uploadImg() {
     if(!this.state.imgSource) {
       return console.error('no image selected!')
-    }
+    } /* https://async-redux-backend.herokuapp.com/ */
     RNFetchBlob.fetch('POST', 'http://localhost:3000/api/analyze', {
       'Content-Type': 'multipart/form-data'
     }, [
