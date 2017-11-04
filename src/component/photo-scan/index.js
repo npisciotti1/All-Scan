@@ -30,7 +30,6 @@ export default class PhotoScan extends React.Component {
     pickImageProm()
     .then( res => {
       this.setState({imgSource: res.source, data: res.data})
-      console.log('this.state:', this.state);
     })
     .catch(err => console.error('__ERROR__: ', err));
   }
@@ -42,8 +41,7 @@ export default class PhotoScan extends React.Component {
     RNFetchBlob.fetch('POST', 'http://localhost:3000/api/analyze', {
       'Content-Type': 'multipart/form-data'
     }, [
-      { name: 'info', data: 'test'},
-      { name: 'image', filename: 'test2.jpeg', data: this.state.data}
+      { name: 'imageToExtract', filename: 'imageToExtract.jpeg', data: this.state.data }
     ])
     .then( res => {
       console.log('success:', res);
