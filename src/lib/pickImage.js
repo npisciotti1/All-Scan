@@ -17,7 +17,6 @@ export default pickImageProm = () => {
           source: { uri: response.uri },
           data: response.data,
         };
-        console.log('was i picked?')
         return resolve(result);
       }
     });
