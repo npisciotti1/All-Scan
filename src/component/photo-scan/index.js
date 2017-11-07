@@ -1,20 +1,9 @@
-import React from 'react';
 
+import React from 'react';
+import RNFetchBlob from 'react-native-fetch-blob';
 import { Button, StyleSheet, View, Text, Image } from 'react-native';
 
-// import Uploader from 'base64-image-uploader';
 import pickImageProm from '../../lib/pickImage';
-import RNFetchBlob from 'react-native-fetch-blob';
-
-
-//add react-native-image-resizer.
-
-//Component will:
-// - allow for photos to be taken then sent to the server.
-// - the 'Camera' component will be nested inside of this one, 'PhotoScan'
-// - Once the photo is taken, it should be compressed and sent to my api via the file uploader.
-// - The server will then analyze the file for text, and send back the extracted text.
-// - Either the client side app will make use of the extracted text, or the server, not sure yet.
 
 export default class PhotoScan extends React.Component {
   constructor(props){
@@ -37,8 +26,8 @@ export default class PhotoScan extends React.Component {
   uploadImg() {
     if(!this.state.imgSource) {
       return console.error('no image selected!')
-    } /* https://async-redux-backend.herokuapp.com/ */
-    RNFetchBlob.fetch('POST', 'http://localhost:3000/api/analyze', {
+    } /* https://allscan-185022.appspot.com */
+    RNFetchBlob.fetch('POST', 'https://allscan-185022.appspot.com/api/analyze', {
       'Content-Type': 'multipart/form-data'
     }, [
       { name: 'imageToExtract', filename: 'imageToExtract.jpeg', data: this.state.data }
