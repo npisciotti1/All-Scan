@@ -3,7 +3,7 @@ import React from 'react';
 import RNFetchBlob from 'react-native-fetch-blob';
 import { Button, StyleSheet, View, Text, Image } from 'react-native';
 
-import pickImageProm from '../../lib/pickImage';
+import pickImage from '../../lib/pickImage';
 
 export default class PhotoScan extends React.Component {
   constructor(props){
@@ -16,24 +16,24 @@ export default class PhotoScan extends React.Component {
   }
 
   selectImg() {
-    pickImageProm()
+    pickImage()
     .then( res => {
       this.setState({imgSource: res.source, data: res.data})
     })
-    .catch(err => console.error('__ERROR__: ', err));
+    .catch(err => console.log('User didnt choose a photo'));
   }
 
   uploadImg() {
     if(!this.state.imgSource) {
       return console.error('no image selected!')
-    } /* https://allscan-185022.appspot.com */
-    RNFetchBlob.fetch('POST', 'https://allscan-185022.appspot.com/api/analyze', {
+    } /* https://async-redux-backend.herokuapp.com/ */
+    RNFetchBlob.fetch('POST', 'https://async-redux-backend.herokuapp.com/api/analyze', {
       'Content-Type': 'multipart/form-data'
     }, [
       { name: 'imageToExtract', filename: 'imageToExtract.jpeg', data: this.state.data }
     ])
     .then( res => {
-      console.log('success:', res);
+      console.log(res);
     })
     .catch( err => {
       console.log('error:', err);

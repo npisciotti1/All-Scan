@@ -1,6 +1,6 @@
 import ImagePicker from 'react-native-image-picker';
 
-export default pickImageProm = () => {
+export default pickImage = () => {
   return new Promise((resolve, reject) => {
     ImagePicker.showImagePicker( response => {
       if (response.didCancel) {
