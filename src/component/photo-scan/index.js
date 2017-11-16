@@ -5,7 +5,9 @@ import {
   StyleSheet,
   View,
   Text,
-  Image
+  Image,
+  TextInput,
+  Alert
 } from 'react-native';
 
 import pickImage from '../../lib/pickImage';
@@ -14,7 +16,6 @@ import uploadImage from '../../lib/uploadImage';
 export default class PhotoScan extends React.Component {
   constructor(props){
     super(props);
-
     this.state = {};
 
     this.handleSelect = this.handleSelect.bind(this)
@@ -23,18 +24,19 @@ export default class PhotoScan extends React.Component {
 
   handleSelect() {
     pickImage()
-    .then( res => {
-      this.setState({imgSource: res.source, data: res.data})
-    })
+    .then( res => this.setState({imgSource: res.source, data: res.data}))
     .catch(err => console.log('User didnt choose a photo'));
   }
 
   handleUpload() {
     if(!this.state.imgSource) {
-      return console.error('no image selected!')
+      return Alert.alert('No image selected!')
     }
-    uploadImage(this.state.imgSource)
-    .then(res => console.log('success: ', res))
+    uploadImage(this.state.data)
+    .then(res => {
+      console.log('success: ', res.data)
+      this.setState({extractedText: res.data})
+    })
     .catch(err => console.log('error: ', err))
   }
 
@@ -42,12 +44,21 @@ export default class PhotoScan extends React.Component {
   render() {
     let img = this.state.imgSource == null ? null :
     <Image
-    source={this.state.imgSource}
-    style={{height:200, width: 200}}
+      source={this.state.imgSource}
+      style={{height: 200, width: 200}}
     />
+
+    let textArea = this.state.extractedText == null ? null :
+    <TextInput
+      style={{height: 200, width: 200, borderColor: 'gray', borderWidth: 1}}
+      onChangeText={(text) => this.setState({extractedText: text})}
+      value={this.state.extractedText}
+      />
+      
     return(
       <View style={styles.container}>
         {img}
+        {textArea}
         <Button
           onPress={this.handleSelect}
           accessabilityLabel="Press to take a picture"
@@ -61,7 +72,6 @@ export default class PhotoScan extends React.Component {
       </View>
     )
   }
-
 }
 
 const styles = StyleSheet.create({
