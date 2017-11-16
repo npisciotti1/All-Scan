@@ -1,9 +1,15 @@
-
 import React from 'react';
-import RNFetchBlob from 'react-native-fetch-blob';
-import { Button, StyleSheet, View, Text, Image } from 'react-native';
+
+import {
+  Button,
+  StyleSheet,
+  View,
+  Text,
+  Image
+} from 'react-native';
 
 import pickImage from '../../lib/pickImage';
+import uploadImage from '../../lib/uploadImage';
 
 export default class PhotoScan extends React.Component {
   constructor(props){
@@ -11,11 +17,11 @@ export default class PhotoScan extends React.Component {
 
     this.state = {};
 
-    this.uploadImg = this.uploadImg.bind(this)
-    this.selectImg = this.selectImg.bind(this);
+    this.handleSelect = this.handleSelect.bind(this)
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
-  selectImg() {
+  handleSelect() {
     pickImage()
     .then( res => {
       this.setState({imgSource: res.source, data: res.data})
@@ -23,21 +29,13 @@ export default class PhotoScan extends React.Component {
     .catch(err => console.log('User didnt choose a photo'));
   }
 
-  uploadImg() {
+  handleUpload() {
     if(!this.state.imgSource) {
       return console.error('no image selected!')
-    } /* https://async-redux-backend.herokuapp.com/ */
-    RNFetchBlob.fetch('POST', 'https://async-redux-backend.herokuapp.com/api/analyze', {
-      'Content-Type': 'multipart/form-data'
-    }, [
-      { name: 'imageToExtract', filename: 'imageToExtract.jpeg', data: this.state.data }
-    ])
-    .then( res => {
-      console.log(res);
-    })
-    .catch( err => {
-      console.log('error:', err);
-    })
+    }
+    uploadImage(this.state.imgSource)
+    .then(res => console.log('success: ', res))
+    .catch(err => console.log('error: ', err))
   }
 
 
@@ -51,12 +49,12 @@ export default class PhotoScan extends React.Component {
       <View style={styles.container}>
         {img}
         <Button
-          onPress={this.selectImg}
+          onPress={this.handleSelect}
           accessabilityLabel="Press to take a picture"
           title="Choose an Image"
         />
         <Button
-          onPress={this.uploadImg}
+          onPress={this.handleUpload}
           accessabilityLabel="Press to upload the image"
           title="Upload Image"
         />
