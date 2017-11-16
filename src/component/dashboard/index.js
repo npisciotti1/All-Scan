@@ -14,10 +14,7 @@ export default class Dashboard extends React.Component {
     return(
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to some cool shit!
-        </Text>
-        <Text style={styles.instructions}>
-          Not sure what it does yet, but it does it!
+          Welcome to Textract Beta!
         </Text>
         <PhotoScan />
       </View>
