@@ -42,19 +42,21 @@ export default class PhotoScan extends React.Component {
 
 
   render() {
+    //this is a silly toggle that will be refactored
     let img = this.state.imgSource == null ? null :
     <Image
       source={this.state.imgSource}
       style={{height: 200, width: 200}}
     />
 
+    //so is this
     let textArea = this.state.extractedText == null ? null :
     <TextInput
       style={{height: 200, width: 200, borderColor: 'gray', borderWidth: 1}}
       onChangeText={(text) => this.setState({extractedText: text})}
       value={this.state.extractedText}
       />
-      
+
     return(
       <View style={styles.container}>
         {img}
