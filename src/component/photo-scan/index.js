@@ -51,11 +51,10 @@ export default class PhotoScan extends React.Component {
 
     //so is this
     let textArea = this.state.extractedText == null ? null :
-    <TextInput
-      style={{height: 200, width: 200, borderColor: 'gray', borderWidth: 1}}
-      onChangeText={(text) => this.setState({extractedText: text})}
-      value={this.state.extractedText}
-      />
+    <Text style={{height: 200, width: 200, borderColor: 'gray', borderWidth: 1}} >
+      this.state.extractedText}
+    </Text>
+
 
     return(
       <View style={styles.container}>

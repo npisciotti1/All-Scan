@@ -1,4 +1,4 @@
-package com.allscanapp;
+package com.textract;
 
 import android.app.Application;
 
