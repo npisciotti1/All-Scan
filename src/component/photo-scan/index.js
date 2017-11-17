@@ -52,7 +52,7 @@ export default class PhotoScan extends React.Component {
     //so is this
     let textArea = this.state.extractedText == null ? null :
     <Text style={{height: 200, width: 200, borderColor: 'gray', borderWidth: 1}} >
-      this.state.extractedText}
+      {this.state.extractedText}
     </Text>
 
 
