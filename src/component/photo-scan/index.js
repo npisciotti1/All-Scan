@@ -21,7 +21,7 @@ export default class PhotoScan extends React.Component {
     this.handleSelect = this.handleSelect.bind(this)
     this.handleUpload = this.handleUpload.bind(this);
   }
-
+  //check here for what is being set when photo is taken, not chosen from camera roll
   handleSelect() {
     pickImage()
     .then( res => this.setState({imgSource: res.source, data: res.data}))
